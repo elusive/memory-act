@@ -8,7 +8,8 @@ class Header extends Component {
 
       this.state = {
           seconds: 0,
-          minutes: 0
+          minutes: 0,
+          isOn: false
       };
 
       this.startTimer = this.startTimer.bind(this);
@@ -19,7 +20,7 @@ class Header extends Component {
   render() {
       return (
           <div className="header">
-              <div className="time">{String(this.state.time).padStart(2,0)}</div>
+              <div className="time">{String(this.state.minutes).padStart(2,0) + ':' + String(this.state.seconds).padStart(2,0)}</div>
           </div>
           );
   }
@@ -37,9 +38,18 @@ class Header extends Component {
         isOn: true,
         time: 1
       });
-      this.timerId = setInterval(() => this.setState({
-        seconds: this.state.seconds + 1
-      }), 1000);
+      this.timer = setInterval(() => {
+        this.setState({
+          seconds: this.state.seconds + 1
+        });
+        if (this.state.seconds >= 60)
+        {
+            this.setState({
+              seconds: 0,
+              minutes: this.state.minutes + 1
+            });
+        }
+      }, 1000);
     }
 
     stopTimer() {
@@ -48,19 +58,12 @@ class Header extends Component {
     }
 
     resetTimer() {
-      this.setState({time: 0, isOn: false});
+      this.setState({
+        seconds: 0,
+        minutes: 0,
+        isOn: false
+      });
     }
-    add() {
-      seconds++;
-      if (seconds >= 60) {
-          seconds = 0;
-          minutes++;
-          if (minutes >= 60) {
-              minutes = 0;
-              hours++;
-          }
-      }
-  }
 }
 
 export default Header;
