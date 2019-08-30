@@ -1,33 +1,267 @@
-.App {
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, big, cite, code, em, img, small, strong, sub, sup, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, header, nav, article, section, dialog, figure, aside, footer {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+  content: none; }
+
+ins {
+  text-decoration: none; }
+
+del {
+  text-decoration: line-through; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+hr {
+  display: none; }
+
+a {
+  overflow: hidden; }
+
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+b, strong {
+  font-weight: bold; }
+
+blockquote {
+  margin: 1em 40px; }
+
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word; }
+
+small {
+  font-size: 85%; }
+
+img {
+  -ms-interpolation-mode: bicubic; }
+
+label {
+  cursor: pointer; }
+
+button, input, select, textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline; }
+
+textarea {
+  overflow: auto;
+  vertical-align: top; }
+
+button, input {
+  line-height: normal; }
+
+input[type="search"] {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box; }
+
+input[type="checkbox"], input[type="radio"] {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box; }
+
+button {
+  width: auto;
+  overflow: visible; }
+
+button::-moz-focus-inner, input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner, input[type="file"] > input[type="button"]::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+  margin: 0; }
+
+.lt-ie8 button, .lt-ie8 input {
+  overflow: visible; }
+
+.lt-ie8 button, .lt-ie8 input, .lt-ie8 select, .lt-ie8 textarea {
+  vertical-align: middle; }
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html, body {
+  font-size: 14px;
+  font-family: Helvetica, Arial, 'Sans serif';
+  color: #555;
+  background: #283344;
+  height: 100%;
+  width: 100%; }
+
+.hide {
+  display: none !important; }
+
+.container {
+  width: 100%;
+  margin: 0;
+  padding: 25px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 375px;
+  margin: 0 auto; }
+
+.header {
+  height: 50px;
+  background: #121c2b;
+  line-height: 50px;
+  font-size: 30px;
+  text-align: center; }
+
+.memory-game-table {
+  width: 100%;
+  height: auto;
+  -webkit-tap-highlight-color: transparent;
+  border-collapse: separate;
+  border-spacing: 1px; }
+
+.memory-game-cell {
+  width: 80px;
+  height: 80px;
+  color: #fff;
   text-align: center;
-}
+  vertical-align: middle;
+  font-size: 30px; }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
+.card {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: block;
+  -webkit-perspective: 500px;
+          perspective: 500px;
+  position: relative;
+  cursor: pointer;
+  z-index: 50;
+  -webkit-tap-highlight-color: transparent; }
+  .card .inside {
+    width: 100%;
+    height: 100%;
+    display: block;
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+    -webkit-transition: .4s ease-in-out;
+    -o-transition: .4s ease-in-out;
+    transition: .4s ease-in-out;
+    background: #38485f; }
+    .card .inside.picked, .card .inside.matched {
+      -webkit-transform: rotateY(180deg);
+              transform: rotateY(180deg); }
+    .card .inside.matched {
+      background: #0d1017; }
+    .card .inside.picked {
+      background: #4a6286; }
+  .card .front, .card .back {
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+    .card .front div, .card .back div {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+              backface-visibility: hidden; }
+  .card .front {
+    -webkit-transform: rotateY(-180deg);
+            transform: rotateY(-180deg); }
+  .card .back {
+    -webkit-transform: rotateY(0deg);
+            transform: rotateY(0deg); }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.modalWrapper {
+  background: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
-.App-link {
-  color: #61dafb;
-}
+.modal {
+  background: #1E2633;
+  border: 1px solid #979797;
+  width: 80%;
+  padding: 20px;
+  color: #fff;
+  border-radius: 5px; }
+  .modal__header {
+    border-bottom: 1px solid #fff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0;
+    margin-bottom: 10px; }
+  .modal__body {
+    font-size: 16px; }
+    .modal__body p {
+      margin-bottom: 10px; }
+  .modal__footer {
+    text-align: center;
+    margin-top: 30px; }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+.startGame {
+  background: #0D1520;
+  width: 120px;
+  text-align: center;
+  height: 45px;
+  line-height: 45px;
+  border: 1px solid #979797;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0;
+  font-size: 18px; }
+  .startGame:focus {
+    outline: none; }
+
+@media screen and (max-width: 480px) {
+  .container {
+    width: 100%;
+    margin: 0; }
+  .memory-game-cell {
+    width: 20vw;
+    height: 20vw; } }
+
+/*# sourceMappingURL=app.2b66fdc64dce1d54b1a7.css.map*/
