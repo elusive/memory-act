@@ -3,10 +3,9 @@ import MemoryGameTable from './MemoryGameTable';
 
 class MemoryGame extends Component {
 
-    PICK_LIMIT = 2;
     VIEWABLE_SECONDS = 1;
     GAME_CARD_COUNT = 24;
-    GAME_ROW_SIZE = 4;
+    GAME_COLUMS = 4;
     MATCH_COUNT_GOAL = this.GAME_CARD_COUNT / 2;
 
     constructor(props) {
@@ -14,26 +13,45 @@ class MemoryGame extends Component {
 
         this.state = {
             flippedCards: [],
-            matchCount: 0
+            matchCount: 0,
+            gameWonDelegate: this.props.gameWon
         };
     }
 
-    cardClickHandler = (evt, card, cardUuid) => {
-        if (card.state.isPicked) {
-            this.state.flippedCards.push(card);
+    render() {
+        return (
+            <div className="container">
+                <MemoryGameTable
+                    ref="gameTable"
+                    cardCount={this.GAME_CARD_COUNT}
+                    columns={this.GAME_COLUMS}
+                    cardClick={this.cardClickHandler.bind(this)} />
+            </div>
+        );
+    }
+
+    startGame = () => {
+        this.refs.gameTable.resetGameTable();
+    }
+
+    cardClickHandler = (evt, card) => {
+        if (this.state.flippedCards.length === 2) {
+            return false;
         }
 
-        console.log("flippedCards count: " + this.state.flippedCards.length);
-
-        this.checkForTwoFlipped();
+        if (!card.state.isMatched && !card.state.isPicked) {
+            card.setPicked(true);
+            this.state.flippedCards.push(card);
+            this.checkForTwoFlipped();
+        }        
     };
 
     checkForTwoFlipped() {
-        if (this.state.flippedCards.filter(c => c.state.isPicked).length === 2) {
+        if (this.state.flippedCards.length === 2) {
             var matchFound = this.checkForTwoMatched();
             if (!matchFound) {
                 setTimeout(() => {
-                    this.state.flippedCards.forEach(c => c.togglePicked());
+                    this.state.flippedCards.forEach(c => c.setPicked(false));
                     this.clearFlippedCards();
                 }, this.VIEWABLE_SECONDS * 1000);
             }
@@ -44,7 +62,7 @@ class MemoryGame extends Component {
         let flipped1 = this.state.flippedCards[0];
         let flipped2 = this.state.flippedCards[1];
 
-        var matched = flipped1.props.front === flipped2.props.front && flipped1.state.uuid !== flipped2.state.uuid;
+        var matched = flipped1.state.front === flipped2.state.front;
 
         if (!matched) {
             return false;
@@ -55,31 +73,22 @@ class MemoryGame extends Component {
         this.clearFlippedCards();
         this.setState(
             { matchCount: this.state.matchCount + 1 },
-            this.checkForAllMatched);
+            this.checkForAllMatched
+        );
 
         return true;
-    }
-
-    clearFlippedCards() {
-        this.setState({ flippedCards : [] });
     }
 
     checkForAllMatched() {
         if (this.state.matchCount === this.MATCH_COUNT_GOAL) {
             // game is won
             console.log("game is won!");
+            this.state.gameWonDelegate();
         }
     }
 
-    render() {
-        return (
-            <div className="container">
-                <MemoryGameTable
-                    cardCount={this.GAME_CARD_COUNT}
-                    rowSize={this.GAME_ROW_SIZE}
-                    cardClick={this.cardClickHandler} />
-            </div>
-        );
+    clearFlippedCards() {
+        this.setState({ flippedCards : [] });
     }
 }
 

@@ -9,30 +9,40 @@ class MemoryCard extends Component {
             uuid: uuidv4(),
             isPicked: false,
             isMatched: false,
-            classList: 'inside'
+            classList: 'inside',
+            front: this.props.front
         };
 
         // bind event handlers to the class instead of the element
-        this.togglePicked = this.togglePicked.bind(this);
+        this.setPicked = this.setPicked.bind(this);
         this.setMatched = this.setMatched.bind(this);
+        this.clicked = this.clicked.bind(this);
 
         // event handler from parent state manager/game class
         this.cardClickedHandler = this.props.cardClick;
     }
 
-    togglePicked(evt) {
-        this.setState(prevState => ({
-            isPicked: !prevState.isPicked
-        }));
-        this.setState(
-            prev => ({
-                classList: prev.isPicked ? 'inside picked' : 'inside'
-            }),
-            () => {
+    clicked(evt) {
+        // this.setState(prevState => ({
+        //     isPicked: !prevState.isPicked
+        // }));
+        // this.setState(
+        //     prev => ({
+        //         classList: prev.isPicked 
+        //     }),
+        //    () => {
                 // call parent handler
-                this.cardClickedHandler(evt, this, this.state.isPicked);
-            }
-        );
+                this.cardClickedHandler(evt, this);
+        //    }
+        //);
+    }
+
+    setPicked(isPicked) {
+        this.setState({
+            isPicked: isPicked,
+            classList: isPicked ? 'inside picked' : 'inside'
+        });
+        
     }
 
     setMatched() {
@@ -48,14 +58,14 @@ class MemoryCard extends Component {
         return (
             <div
                 className="card"
-                onClick={this.togglePicked}
+                onClick={this.clicked}
                 data-row="0"
                 data-col="1"
                 data-id="11"
             >
                 <div className={this.state.classList}>
                     <div className="front">
-                        <div>{this.props.front}</div>
+                        <div>{this.state.front}</div>
                     </div>
 
                     <div className="back">

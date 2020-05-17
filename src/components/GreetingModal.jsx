@@ -6,14 +6,16 @@ class GreetingModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isVisible : true
+            isVisible : true,
+            startDelegate : this.props.start
         }
 
-        this.toggleVisibility = this.toggleVisibility.bind(this);
+        this.startGameClickHandler = this.startGameClickHandler.bind(this);
     }
 
-    toggleVisibility() {
+    startGameClickHandler() {
         this.setState({ isVisible: !this.state.isVisible });
+        this.state.startDelegate();
     }
 
     render() {
@@ -32,7 +34,7 @@ class GreetingModal extends Component {
                         <p>Your aim is to find all the possible pair as soon as possible.</p>
                     </div>
                     <div className="modal__footer">
-                        <button className="startGame" onClick={this.toggleVisibility}>Start</button>
+                        <button className="startGame" onClick={this.startGameClickHandler}>Start</button>
                     </div>
                 </div>
             </div>
