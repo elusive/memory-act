@@ -1,10 +1,10 @@
-# Memory Act
-
-![Node.js version][nodejs-badge][nodejs]
-![APLv2][license-badge][license]
-![Build Status - Travis][travis-badge][travis-ci]
+[![Node.js version][nodejs-badge]][nodejs]
+[![APLv2][license-badge]][license]
+[![Build Status - Travis][travis-badge]][travis-ci]
+[![Build Status - GitHub Actions][gha-badge]][gha-ci]
 ![Node.js CI](https://github.com/elusive/memory-act/workflows/Node.js%20CI/badge.svg)
-![Build Status - GitHub Actions][gha-badge][gha-ci]
+
+# Memory Act
 
 This is a simple card-based memory game. The original game is [here](https://pwa-memory-game.surge.sh/) and is written using VanillaJS.
 
