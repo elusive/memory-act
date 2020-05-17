@@ -1,8 +1,7 @@
-[![Node.js version][nodejs-badge]][nodejs]
-[![APLv2][license-badge]][license]
-[![Build Status - Travis][travis-badge]][travis-ci]
-[![Build Status - GitHub Actions][gha-badge]][gha-ci]
+[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)  
 ![Node.js CI](https://github.com/elusive/memory-act/workflows/Node.js%20CI/badge.svg)
+[![Build Status](https://travis-ci.com/elusive/memory-act.svg?branch=master)](https://travis-ci.com/elusive/memory-act)
 
 # Memory Act
 
