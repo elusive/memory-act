@@ -1,5 +1,5 @@
 ![Node.js CI](https://github.com/elusive/memory-act/workflows/Node.js%20CI/badge.svg)
-[![Travis CI Status](https://travis-ci.com/elusive/memory-act.svg?branch=master)](https://travis-ci.com/elusive/memory-act)
+[![Build Status](https://travis-ci.com/elusive/memory-act.svg?branch=master)](https://travis-ci.com/elusive/memory-act)
 [![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
