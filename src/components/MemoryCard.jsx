@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import uuidv4 from 'uuid/v4';
+import PropTypes from 'prop-types';
 
 class MemoryCard extends Component {
+    static get propTypes() {
+        return {
+            front: PropTypes.string,
+            cardClick: PropTypes.func,
+        };
+    }
 
     constructor(props) {
         super(props);
@@ -10,7 +17,7 @@ class MemoryCard extends Component {
             isPicked: false,
             isMatched: false,
             classList: 'inside',
-            front: this.props.front
+            front: this.props.front,
         };
 
         // bind event handlers to the class instead of the element
@@ -23,32 +30,20 @@ class MemoryCard extends Component {
     }
 
     clicked(evt) {
-        // this.setState(prevState => ({
-        //     isPicked: !prevState.isPicked
-        // }));
-        // this.setState(
-        //     prev => ({
-        //         classList: prev.isPicked 
-        //     }),
-        //    () => {
-                // call parent handler
-                this.cardClickedHandler(evt, this);
-        //    }
-        //);
+        this.cardClickedHandler(evt, this);
     }
 
     setPicked(isPicked) {
         this.setState({
             isPicked: isPicked,
-            classList: isPicked ? 'inside picked' : 'inside'
+            classList: isPicked ? 'inside picked' : 'inside',
         });
-        
     }
 
     setMatched() {
         this.setState({
             isMatched: true,
-            classList: 'inside matched'
+            classList: 'inside matched',
         });
     }
 

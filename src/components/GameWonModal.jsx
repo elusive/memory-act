@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class GreetingModal extends Component {
+    static get propTypes() {
+        return {
+            newGame: PropTypes.func,
+            isVisible: PropTypes.bool,
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {

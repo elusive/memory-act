@@ -1,7 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import MemoryCard from './MemoryCard';
+import PropTypes from 'prop-types';
 
-class MemoryGameTable extends Component {
+class MemoryGameTable extends React.Component {
+    static get propTypes() {
+        return {
+            cardCount: PropTypes.number,
+            columns: PropTypes.number,
+            cardClick: PropTypes.func,
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -9,15 +18,15 @@ class MemoryGameTable extends Component {
             columns: this.props.columns,
             rows: this.props.cardCount / this.props.columns,
             faceCount: this.props.cardCount / 2,
-            flippedCount: 0
+            flippedCount: 0,
         };
 
         this.cardClickHandler = this.props.cardClick;
         this.resetGameTable = this.resetGameTable.bind(this);
-        
+
         this.CARDS = this.buildShuffledDeck();
     }
-    
+
     render() {
         let cardNumber = 0;
         let tableRows = [];
@@ -27,7 +36,9 @@ class MemoryGameTable extends Component {
                 cardNumber += 1;
                 rowCells.push(
                     <td className="memory-game-cell" key={'cell' + cardNumber}>
-                        <MemoryCard cardClick={this.cardClickHandler} front={this.CARDS[cardNumber - 1]} 
+                        <MemoryCard
+                            cardClick={this.cardClickHandler}
+                            front={this.CARDS[cardNumber - 1]}
                         />
                     </td>
                 );
@@ -46,15 +57,15 @@ class MemoryGameTable extends Component {
         this.CARDS = this.buildShuffledDeck();
         //this.render();
     }
-    
+
     buildShuffledDeck() {
         // build cards array (2 sets of same)
         let cards = [...Array(this.state.faceCount).keys()];
         cards = cards.concat(cards);
-        
+
         /*
-         * SHUFFLE cards array by looping through 
-         * the array and for each card, swapping 
+         * SHUFFLE cards array by looping through
+         * the array and for each card, swapping
          * it with another randomly selected card
          * from elsewhere in the array.
          */

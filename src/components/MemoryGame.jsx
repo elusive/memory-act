@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import MemoryGameTable from './MemoryGameTable';
+import PropTypes from 'prop-types';
+
+const VIEWABLE_SECONDS = 1;
+const GAME_CARD_COUNT = 24;
+const GAME_COLUMNS = 4;
+const MATCH_COUNT_GOAL = this.GAME_CARD_COUNT / 2;
 
 class MemoryGame extends Component {
-
-    VIEWABLE_SECONDS = 1;
-    GAME_CARD_COUNT = 24;
-    GAME_COLUMS = 4;
-    MATCH_COUNT_GOAL = this.GAME_CARD_COUNT / 2;
+    static get propTypes() {
+        return {
+            gameWon: PropTypes.func,
+        };
+    }
 
     constructor(props) {
         super(props);
-
         this.state = {
             flippedCards: [],
             matchCount: 0,
-            gameWonDelegate: this.props.gameWon
+            gameWonDelegate: this.props.gameWon,
         };
     }
 
@@ -22,19 +27,20 @@ class MemoryGame extends Component {
         return (
             <div className="container">
                 <MemoryGameTable
-                    ref="gameTable"
-                    cardCount={this.GAME_CARD_COUNT}
-                    columns={this.GAME_COLUMS}
-                    cardClick={this.cardClickHandler.bind(this)} />
+                    ref={this.setGameTableRef}
+                    cardCount={GAME_CARD_COUNT}
+                    columns={GAME_COLUMNS}
+                    cardClick={this.cardClickHandler.bind(this)}
+                />
             </div>
         );
     }
 
-    startGame = () => {
-        this.refs.gameTable.resetGameTable();
+    startGame() {
+        this.gameTable.resetGameTable();
     }
 
-    cardClickHandler = (evt, card) => {
+    cardClickHandler(evt, card) {
         if (this.state.flippedCards.length === 2) {
             return false;
         }
@@ -43,17 +49,17 @@ class MemoryGame extends Component {
             card.setPicked(true);
             this.state.flippedCards.push(card);
             this.checkForTwoFlipped();
-        }        
-    };
+        }
+    }
 
     checkForTwoFlipped() {
         if (this.state.flippedCards.length === 2) {
             var matchFound = this.checkForTwoMatched();
             if (!matchFound) {
                 setTimeout(() => {
-                    this.state.flippedCards.forEach(c => c.setPicked(false));
+                    this.state.flippedCards.forEach((c) => c.setPicked(false));
                     this.clearFlippedCards();
-                }, this.VIEWABLE_SECONDS * 1000);
+                }, VIEWABLE_SECONDS * 1000);
             }
         }
     }
@@ -80,15 +86,19 @@ class MemoryGame extends Component {
     }
 
     checkForAllMatched() {
-        if (this.state.matchCount === this.MATCH_COUNT_GOAL) {
+        if (this.state.matchCount === MATCH_COUNT_GOAL) {
             // game is won
-            console.log("game is won!");
+            console.log('game is won!');
             this.state.gameWonDelegate();
         }
     }
 
     clearFlippedCards() {
-        this.setState({ flippedCards : [] });
+        this.setState({ flippedCards: [] });
+    }
+
+    setGameTableRef(element) {
+        this.gameTable = element;
     }
 }
 
