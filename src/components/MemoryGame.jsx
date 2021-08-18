@@ -16,11 +16,11 @@ export default MemoryGame = (props) => {
 
 
 
-startGame() {
+function startGame() {
     this.gameTable.resetGameTable();
 }
 
-cardClickHandler(evt, card) {
+function cardClickHandler(evt, card) {
     if (this.state.flippedCards.length === 2) {
         return false;
     }
@@ -32,7 +32,7 @@ cardClickHandler(evt, card) {
     }
 }
 
-checkForTwoFlipped() {
+function checkForTwoFlipped() {
     if (this.state.flippedCards.length === 2) {
         var matchFound = this.checkForTwoMatched();
         if (!matchFound) {
@@ -44,7 +44,7 @@ checkForTwoFlipped() {
     }
 }
 
-checkForTwoMatched() {
+function checkForTwoMatched() {
     let flipped1 = this.state.flippedCards[0];
     let flipped2 = this.state.flippedCards[1];
 
@@ -65,7 +65,7 @@ checkForTwoMatched() {
     return true;
 }
 
-checkForAllMatched() {
+function checkForAllMatched() {
     if (this.state.matchCount === MATCH_COUNT_GOAL) {
         // game is won
         console.log('game is won!');
@@ -73,6 +73,6 @@ checkForAllMatched() {
     }
 }
 
-clearFlippedCards() {
+function clearFlippedCards() {
     this.setState({ flippedCards: [] });
 }

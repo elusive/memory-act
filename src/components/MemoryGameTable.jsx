@@ -2,7 +2,6 @@
 import { useContext } from 'react';
 import { GameContext } from '../state/GameContext';
 
-
 export default MemoryGameTable = (props) => {
     const cardCount = props.cardCount;
     const rowSize = props.rowSize;

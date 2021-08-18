@@ -41,14 +41,15 @@ export default MemoryCard = (card) => {
 
 /*
         this.setState({
-            classList: (this.state.isPicked) ? 'inside picked' : 'inside'
+            isPicked: isPicked,
+            classList: isPicked ? 'inside picked' : 'inside',
         });
     }
 
     setMatched() {
         this.setState({
             isMatched: true,
-            classList: 'inside matched'
+            classList: 'inside matched',
         });
     }
 */
