@@ -1,35 +1,63 @@
 
-import React, { Component } from 'react';
-import MemoryCard from './MemoryCard';
+import { useContext } from 'react';
+import { GameContext } from '../state/GameContext';
 
 
-class MemoryGameTable extends Component {
-    state = {
-        cardCount: 20,
-        rowSize: 4,
-        cards: [],
-     }
-    render() {
+export default MemoryGameTable = (props) => {
+    const cardCount = props.cardCount;
+    const rowSize = props.rowSize;
+    const cards = useContext(GameContext);
+
+    const buildTableRows = () => {
         let cardNumber = 0;
-        let rows = (this.state.cardCount / this.state.rowSize)
+        let maxCardNumber = Math.min(cardCount / 2);
+        let rows = (cardCount / rowSize)
         let tableRows = [];
         for (let r = 0; r < rows; r++) {
             let tableCells = [];
-            for (let c = 0; c < this.state.rowSize; c++) {
-                cardNumber += 1;
-                tableCells.push(<td className="memory-game-cell" key={'cell' + cardNumber}><MemoryCard front={cardNumber} /></td>);
+            for (let c = 0; c < rowSize; c++) {
+                // check if we need to reset card number or just increment
+                cardNumber = (cardNumber < maxCardNumber) ? cardNumber + 1 : 1;
+
+                tableCells.push(
+                    <td className="memory-game-cell" key={'cell' + cardNumber}>
+                        <MemoryCard
+                            front={cards[cardNumber].value}
+                            isMatched={cards[cardNumber].isMatched}
+                            isPicked={cards[cardNumber].isPicked}
+                            row={r} col={c} />
+                    </td>
+                );
             }
+
             tableRows.push(<tr key={'row' + cardNumber}>{tableCells}</tr>);
         }
 
-        return (
-            <table className="memory-game-table">
-                <tbody>
-                    {tableRows}
-                </tbody>
-            </table>
-          );
+        return tableRows;
     }
+
+    return (
+        <table className="memory-game-table">
+            <tbody>
+                {buildTableRows()}
+            </tbody>
+        </table>
+      );
+}
+
+
+
+class MemoryGameTable extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cardCount: props.cardCount,
+            rowSize: props.rowSize,
+            cards: props.cards
+        };
+    }
+
+
 }
 
 export default MemoryGameTable;

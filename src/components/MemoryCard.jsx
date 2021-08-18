@@ -1,25 +1,45 @@
 
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
-class MemoryCard extends Component {
+import { GameContext } from '../state/GameContext';
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            isPicked : false,
-            isMatched : false,
-            classList : 'inside'
-        };
 
-        // bind event handlers to the class instead of the element
-        this.togglePicked = this.togglePicked.bind(this);
-        this.setMatched = this.setMatched.bind(this);
+export default MemoryCard = (card) => {
+    const [classList, setClassList] = useState('inside')
+    const {toggleSelected} = useContext(GameContext);
+    const handleCardClick = (event) => {
+        console.log('target info', event.currentTarget);
+        console.log('event info', event);
+  	    var id = this.refs.tester.getAttribute("data-id");
+
+        console.log('id: ', id);
+        let card = event.target;
+        console.log(`id from dataset: ${card.dataset.id}`);
+
+        toggleSelected(id);
+  //      setClassList(card.isPicked ? ['inside picked'] : )
     }
 
-    togglePicked() {
-        this.setState({
-            isPicked: !this.state.isPicked,
-        });
+    const CARD_BACK = 'JG';
+
+    return (
+        <div className="card" onClick={this.handleCardClick} data-row="0" data-col="1" data-id="{card.id}">
+            <div className={this.state.classList}>
+
+                <div className="front">
+                    <div>{this.props.front}</div>
+                </div>
+
+                <div className="back">
+                    <div>{CARD_BACK}</div>
+                </div>
+            </div>
+        </div>);
+
+}
+
+
+/*
         this.setState({
             classList: (this.state.isPicked) ? 'inside picked' : 'inside'
         });
@@ -31,25 +51,4 @@ class MemoryCard extends Component {
             classList: 'inside matched'
         });
     }
-
-    render() {
-
-        const CARD_BACK = 'M';
-
-        return (
-            <div className="card" onClick={this.togglePicked} data-row="0" data-col="1" data-id="11">
-                <div className={this.state.classList}>
-
-                    <div className="front">
-                        <div>{this.props.front}</div>
-                    </div>
-
-                    <div className="back">
-                        <div>{CARD_BACK}</div>
-                    </div>
-                </div>
-            </div>);
-    }
-}
-
-export default MemoryCard;
+*/
