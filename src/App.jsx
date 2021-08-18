@@ -14,7 +14,7 @@ function App() {
       <div className="App">
         <Header />
         <MemoryGame />
-      <GreetingModal />
+        <GreetingModal />
       </div>
     </GameContextProvider>
   );
