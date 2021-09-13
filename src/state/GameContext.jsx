@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react';
+import React, { createContext, useReducer } from 'react';
 
 import reducer from './GameReducer.js';
 import MemoryCard from '../components/MemoryCard';
@@ -48,7 +48,6 @@ export const GameContextProvider = ({ children }) => {
                 rowSize: state.rowSize,
                 toggleSelected,
                 addMatch,
-                addCard
             }
         } >
         { children }

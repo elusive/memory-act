@@ -1,8 +1,9 @@
 
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { GameContext } from '../state/GameContext';
+import MemoryCard from './MemoryCard'
 
-export default MemoryGameTable = (props) => {
+const MemoryGameTable = (props) => {
     const cardCount = props.cardCount;
     const rowSize = props.rowSize;
     const cards = useContext(GameContext);
@@ -44,19 +45,5 @@ export default MemoryGameTable = (props) => {
       );
 }
 
-
-
-class MemoryGameTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            cardCount: props.cardCount,
-            rowSize: props.rowSize,
-            cards: props.cards
-        };
-    }
-
-
-}
 
 export default MemoryGameTable;

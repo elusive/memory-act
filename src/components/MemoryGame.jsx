@@ -1,12 +1,61 @@
-"use strict";
 
-import React, { useEffect } from 'react';
-import MemoryGameTable from './MemoryGameTable';
-import MemoryCard from './MemoryCard';
+import React, { useContext, useEffect } from 'react';
 import { GameContext } from '../state/GameContext';
+import MemoryGameTable from './MemoryGameTable';
 
 
-export default MemoryGame = (props) => {
+const MemoryGame = (props) => {
+
+    const VIEWABLE_SECONDS = 2;
+
+    const state = useContext(GameContext);
+
+    useEffect(() => {
+        /*
+          * Todo when card selected:
+          *     - check for 2 cards selected max
+          *     - if 2 cards selected check for match
+          *     - if match change state of cards to matched
+          *     - check for all matches completed
+          *     - check for win and need to show dialog
+          */
+
+        
+        var matchFound = this.checkForTwoMatched();
+        if (!matchFound) {
+            setTimeout(() => {
+                this.state.flippedCards.forEach((c) => c.setPicked(false));
+            }, VIEWABLE_SECONDS * 1000);
+        }
+    
+        function startGame() {
+            this.gameTable.resetGameTable();
+        }
+
+
+        function checkForTwoMatched() {
+            let flipped = state.cards.filter(c => c.isPicked);
+            if (flipped.length !== 2) {
+                return false;
+            }
+
+            var matched = (flipped[0].front === flipped[1].front);
+            if (!matched) {
+                return false;
+            }
+
+            state.addMatch(...flipped);
+            
+            // all matched?
+            if (state.cards.every(c => c.isMatched)) {
+                console.log('game is won!');
+                this.state.gameWonDelegate();
+            }
+
+            return true;
+        }
+    })
+
     return (
         <div className="container">
             <MemoryGameTable cardCount="20" rowSize="4" />
@@ -15,64 +64,5 @@ export default MemoryGame = (props) => {
 }
 
 
+export default MemoryGame;
 
-function startGame() {
-    this.gameTable.resetGameTable();
-}
-
-function cardClickHandler(evt, card) {
-    if (this.state.flippedCards.length === 2) {
-        return false;
-    }
-
-    if (!card.state.isMatched && !card.state.isPicked) {
-        card.setPicked(true);
-        this.state.flippedCards.push(card);
-        this.checkForTwoFlipped();
-    }
-}
-
-function checkForTwoFlipped() {
-    if (this.state.flippedCards.length === 2) {
-        var matchFound = this.checkForTwoMatched();
-        if (!matchFound) {
-            setTimeout(() => {
-                this.state.flippedCards.forEach((c) => c.setPicked(false));
-                this.clearFlippedCards();
-            }, VIEWABLE_SECONDS * 1000);
-        }
-    }
-}
-
-function checkForTwoMatched() {
-    let flipped1 = this.state.flippedCards[0];
-    let flipped2 = this.state.flippedCards[1];
-
-    var matched = flipped1.state.front === flipped2.state.front;
-
-    if (!matched) {
-        return false;
-    }
-
-    flipped1.setMatched();
-    flipped2.setMatched();
-    this.clearFlippedCards();
-    this.setState(
-        { matchCount: this.state.matchCount + 1 },
-        this.checkForAllMatched
-    );
-
-    return true;
-}
-
-function checkForAllMatched() {
-    if (this.state.matchCount === MATCH_COUNT_GOAL) {
-        // game is won
-        console.log('game is won!');
-        this.state.gameWonDelegate();
-    }
-}
-
-function clearFlippedCards() {
-    this.setState({ flippedCards: [] });
-}

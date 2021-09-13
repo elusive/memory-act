@@ -1,12 +1,17 @@
 
-import React, { Component, useState } from 'react';
-
+import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { GameContext } from '../state/GameContext';
 
-
-export default MemoryCard = (card) => {
-    const [classList, setClassList] = useState('inside')
+const MemoryCard = (props) => {
+    const [isSelected, setIsSelected] = useState(false);
+    const [isMatched, setIsMatched] = useState(false);
     const {toggleSelected} = useContext(GameContext);
+
+    const DefaultStyle = ['inside'];
+    const SelectedStyle = ['inside picked'];
+    const MatchedStyle = ['inside matched'];
+
     const handleCardClick = (event) => {
         console.log('target info', event.currentTarget);
         console.log('event info', event);
@@ -17,17 +22,24 @@ export default MemoryCard = (card) => {
         console.log(`id from dataset: ${card.dataset.id}`);
 
         toggleSelected(id);
-  //      setClassList(card.isPicked ? ['inside picked'] : )
+    }
+
+    const toggle = () => {
+        setIsSelected(!isSelected);
+    }
+
+    const match = () => {
+        setIsMatched(true);
     }
 
     const CARD_BACK = 'JG';
 
     return (
-        <div className="card" onClick={this.handleCardClick} data-row="0" data-col="1" data-id="{card.id}">
-            <div className={this.state.classList}>
+        <div className="card" onClick={handleCardClick} data-row="0" data-col="1" data-id="{card.id}">
+            <div className="{isMatched ? MatchedStyle : isSelected ? SelectedStyle : DefaultStyle}">
 
                 <div className="front">
-                    <div>{this.props.front}</div>
+                    <div>{props.front}</div>
                 </div>
 
                 <div className="back">
@@ -38,6 +50,11 @@ export default MemoryCard = (card) => {
 
 }
 
+MemoryCard.propTypes = {
+    card: PropTypes.object,
+}
+
+export default MemoryCard;
 
 /*
         this.setState({
@@ -46,10 +63,5 @@ export default MemoryCard = (card) => {
         });
     }
 
-    setMatched() {
-        this.setState({
-            isMatched: true,
-            classList: 'inside matched',
-        });
     }
 */

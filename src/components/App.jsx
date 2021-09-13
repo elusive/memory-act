@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from './components/Header';
-import GreetingModal from './components/GreetingModal';
-import MemoryGame from './components/MemoryGame';
+import Header from './Header';
+import GreetingModal from './GreetingModal';
+import MemoryGame from './MemoryGame';
 
-import { GameContextProvider } from './state/GameContext';
+import { GameContextProvider } from '../state/GameContext';
 
 import './App.css';
 
