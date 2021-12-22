@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { GameContext } from '../state/GameContext';
 
 const MemoryCard = (props) => {
+    
     const [isSelected, setIsSelected] = useState(false);
     const [isMatched, setIsMatched] = useState(false);
     const {toggleSelected} = useContext(GameContext);
