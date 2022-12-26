@@ -13,6 +13,7 @@ const initialState = {
     selected: [],
     matched: [],
     rowSize: ROW_SIZE,
+    isNewGame: false,
 };
 
 
@@ -21,7 +22,7 @@ export const GameContext = createContext(initialState);
 
 
 // create provider component
-export const GameContextProvider = ({ children }) => {
+export const GameContextProvider = ( children ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     // actions
@@ -37,7 +38,16 @@ export const GameContextProvider = ({ children }) => {
             type: 'ADD_MATCH',
             payload: [cardA, cardB],
         });
+        dispatch({
+            type: 'TOGGLE_SELECTED',
+            payload: cardA.id, 
+        });
+        dispatch({
+            type: 'TOGGLE_SELECTED',
+            payload: cardB.id,
+        });
     }
+
 
     return (
         < GameContextProvider.Provider value = {
@@ -48,6 +58,7 @@ export const GameContextProvider = ({ children }) => {
                 rowSize: state.rowSize,
                 toggleSelected,
                 addMatch,
+                cardClickHandler: {},
             }
         } >
         { children }

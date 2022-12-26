@@ -12,6 +12,7 @@ const reducer = (state, action) => {
                     }
                     return card;
                 }),
+                selected: state.cards.filter(c => c.isSelected),
             };
 
         case 'ADD_MATCH':
@@ -23,13 +24,14 @@ const reducer = (state, action) => {
                     }
                     return card;
                 }),
+                matched: state.cards.filter(c => c.isMatched),
             };
 
-        case 'ADD_CARD':
-            return {
-                ...state,
-                cards: [...state.cards, action.payload],
-            };
+//        case 'ADD_CARD':
+//            return {
+//                ...state,
+//                cards: [...state.cards, action.payload],
+//            };
 
         default:
             return state;
@@ -39,9 +41,10 @@ const reducer = (state, action) => {
 reducer.propTypes = {
     state: PropTypes.shape({
         cards: PropTypes.arrayOf(MemoryCard),
-        selectCount: PropTypes.number,
-        matchCount: PropTypes.number,
+        selected: [],
+        matched: [],
         rowSize: PropTypes.number,
+        isNewGame: PropTypes.boolean,
     }),
 };
 

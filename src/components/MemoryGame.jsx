@@ -4,7 +4,7 @@ import { GameContext } from '../state/GameContext';
 import MemoryGameTable from './MemoryGameTable';
 
 
-const MemoryGame = (props) => {
+const MemoryGame = () => {
 
     const VIEWABLE_SECONDS = 2;
 
@@ -20,33 +20,42 @@ const MemoryGame = (props) => {
           *     - check for win and need to show dialog
           */
 
-        
-        var matchFound = this.checkForTwoMatched();
-        if (!matchFound) {
-            setTimeout(() => {
-                this.state.flippedCards.forEach((c) => c.setPicked(false));
-            }, VIEWABLE_SECONDS * 1000);
-        }
-    
-        function startGame() {
-            this.gameTable.resetGameTable();
-        }
+        state.cardClickHandler = (card) => {
+            // if none selected yet toggle selected only
+            if (this.state.selected.length == 1) {
+                state.toggleSelected(card.id);
+                return;
+            }
 
+            // else if already one selected check for match
+            if (this.state.selected.length == 1) {
+                state.toggleSelected(card.id);
+            }
+         
+            var matchFound = checkForTwoMatched();
+            if (!matchFound) {
+                setTimeout(() => {
+                    this.state.flippedCards.forEach((c) => c.setPicked(false));
+                }, VIEWABLE_SECONDS * 1000);
+            }
+        }
 
         function checkForTwoMatched() {
-            let flipped = state.cards.filter(c => c.isPicked);
-            if (flipped.length !== 2) {
+            // need 2 selected to compare 
+            if (state.selected.length !== 2) {
                 return false;
             }
 
-            var matched = (flipped[0].front === flipped[1].front);
+            // check front values match for the selected
+            var matched = (state.selected[0].front === state.selected[1].front);
             if (!matched) {
                 return false;
             }
 
-            state.addMatch(...flipped);
+            // use reducer to update state with match
+            state.addMatch(...state.selected);
             
-            // all matched?
+            // all matched? then game won
             if (state.cards.every(c => c.isMatched)) {
                 console.log('game is won!');
                 this.state.gameWonDelegate();
@@ -58,7 +67,7 @@ const MemoryGame = (props) => {
 
     return (
         <div className="container">
-            <MemoryGameTable cardCount="20" rowSize="4" />
+            <MemoryGameTable cardCount="20" rowSize="4" isNewGame={this.state.isNewGame} />
         </div>
      );
 }

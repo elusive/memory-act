@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import Header from './Header';
 import GreetingModal from './GreetingModal';
 import MemoryGame from './MemoryGame';
@@ -9,6 +9,9 @@ import './App.css';
 
 
 function App() {
+
+    
+
   return (
     <GameContextProvider>
       <div className="App">

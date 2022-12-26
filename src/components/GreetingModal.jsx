@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useState } from 'react';
+import { GameContext } from '../state/GameContext';
 
-function GreetingModal(props) {
-    props.propTypes = {
-        start: PropTypes.func,
-    }
+
+function GreetingModal() {
 
     const [isVisible, setIsVisible] = useState(true);
-    const [startDelegate, setStartDelegate] = useState(props.start);
+    const state = useContext(GameContext);
 
 
     const startGameClickHandler = () => {
         setIsVisible(!isVisible);
-        startDelegate();
+        state.isNewGame = true;        
     }
 
 
     const displayStyle = {
-        display: this.state.isVisible ? 'flex' : 'none',
+        display: this.isVisible ? 'flex' : 'none',
     };
 
 
@@ -38,8 +36,7 @@ function GreetingModal(props) {
                 <div className="modal__footer">
                     <button
                         className="startGame"
-                        onClick={startGameClickHandler}
-                    >
+                        onClick={startGameClickHandler}>
                         Start
                     </button>
                 </div>
