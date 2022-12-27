@@ -1,75 +1,48 @@
-import React, { Component } from 'react';
-import uuidv4 from 'uuid/v4';
+
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { GameContext } from '../state/GameContext';
 
-class MemoryCard extends Component {
-    static get propTypes() {
-        return {
-            front: PropTypes.string,
-            cardClick: PropTypes.func,
-        };
+MemoryCard.propTypes = {
+    front: PropTypes.number,
+    isMatched: PropTypes.bool,
+    isSelected: PropTypes.bool,
+    row: PropTypes.number,
+    col: PropTypes.number,
+    cardClickHandler: PropTypes.function,
+}
+
+const MemoryCard = (props) => {
+    const state = useContext(GameContext); 
+
+    const DefaultStyle = ['inside'];
+    const SelectedStyle = ['inside picked'];
+    const MatchedStyle = ['inside matched'];
+
+    const handleCardClick = (event) => {
+        console.log('target info', event.currentTarget);
+        console.log('event info', event);
+        props.cardClickHandler(this);
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            uuid: uuidv4(),
-            isPicked: false,
-            isMatched: false,
-            classList: 'inside',
-            front: this.props.front,
-        };
+    const CARD_BACK = 'JG';
+    const cardId = props.front;
 
-        // bind event handlers to the class instead of the element
-        this.setPicked = this.setPicked.bind(this);
-        this.setMatched = this.setMatched.bind(this);
-        this.clicked = this.clicked.bind(this);
+    return (
+        <div className="card" onClick={handleCardClick} data-row="0" data-col="1" data-id={cardId}>
+            <div className={state.cards[cardId].isMatched ? MatchedStyle : state.cards[cardId].isSelected ? SelectedStyle : DefaultStyle}>
 
-        // event handler from parent state manager/game class
-        this.cardClickedHandler = this.props.cardClick;
-    }
+                <div className="front">
+                    <div>{props.front}</div>
+                </div>
 
-    clicked(evt) {
-        this.cardClickedHandler(evt, this);
-    }
-
-    setPicked(isPicked) {
-        this.setState({
-            isPicked: isPicked,
-            classList: isPicked ? 'inside picked' : 'inside',
-        });
-    }
-
-    setMatched() {
-        this.setState({
-            isMatched: true,
-            classList: 'inside matched',
-        });
-    }
-
-    render() {
-        const CARD_BACK = 'M';
-
-        return (
-            <div
-                className="card"
-                onClick={this.clicked}
-                data-row="0"
-                data-col="1"
-                data-id="11"
-            >
-                <div className={this.state.classList}>
-                    <div className="front">
-                        <div>{this.state.front}</div>
-                    </div>
-
-                    <div className="back">
-                        <div>{CARD_BACK}</div>
-                    </div>
+                <div className="back">
+                    <div>{CARD_BACK}</div>
                 </div>
             </div>
-        );
-    }
+        </div>);
+
 }
 
 export default MemoryCard;
+

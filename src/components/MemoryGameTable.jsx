@@ -1,85 +1,55 @@
-import React from 'react';
-import MemoryCard from './MemoryCard';
+
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { GameContext } from '../state/GameContext';
+import MemoryCard from './MemoryCard'
 
-class MemoryGameTable extends React.Component {
-    static get propTypes() {
-        return {
-            cardCount: PropTypes.number,
-            columns: PropTypes.number,
-            cardClick: PropTypes.func,
-        };
-    }
+MemoryGameTable.propTypes = {
+    cardCount: PropTypes.number,
+    rowSize: PropTypes.number
+}
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            cardCount: this.props.cardCount,
-            columns: this.props.columns,
-            rows: this.props.cardCount / this.props.columns,
-            faceCount: this.props.cardCount / 2,
-            flippedCount: 0,
-        };
+const MemoryGameTable = (props) => {
+    const cardCount = props.cardCount;
+    const rowSize = props.rowSize;
+    const state = useContext(GameContext);
 
-        this.cardClickHandler = this.props.cardClick;
-        this.resetGameTable = this.resetGameTable.bind(this);
-
-        this.CARDS = this.buildShuffledDeck();
-    }
-
-    render() {
+    const buildTableRows = () => {
         let cardNumber = 0;
+        let maxCardNumber = Math.min(cardCount / 2);
+        let rows = (cardCount / rowSize)
         let tableRows = [];
-        for (let r = 0; r < this.state.rows; r++) {
-            let rowCells = [];
-            for (let c = 0; c < this.state.columns; c++) {
-                cardNumber += 1;
-                rowCells.push(
+        for (let r = 0; r < rows; r++) {
+            let tableCells = [];
+            for (let c = 0; c < rowSize; c++) {
+                // check if we need to reset card number or just increment
+                cardNumber = (cardNumber < maxCardNumber) ? cardNumber + 1 : 1;
+
+                tableCells.push(
                     <td className="memory-game-cell" key={'cell' + cardNumber}>
                         <MemoryCard
-                            cardClick={this.cardClickHandler}
-                            front={this.CARDS[cardNumber - 1]}
-                        />
+                            front={state.cards[cardNumber].value}
+                            isMatched={state.cards[cardNumber].isMatched}
+                            isPicked={state.cards[cardNumber].isPicked}
+                            row={r} col={c} />
                     </td>
                 );
             }
-            tableRows.push(<tr key={'row' + cardNumber}>{rowCells}</tr>);
+
+            tableRows.push(<tr key={'row' + cardNumber}>{tableCells}</tr>);
         }
 
-        return (
-            <table className="memory-game-table">
-                <tbody>{tableRows}</tbody>
-            </table>
-        );
+        return tableRows;
     }
 
-    resetGameTable() {
-        this.CARDS = this.buildShuffledDeck();
-        //this.render();
-    }
-
-    buildShuffledDeck() {
-        // build cards array (2 sets of same)
-        let cards = [...Array(this.state.faceCount).keys()];
-        cards = cards.concat(cards);
-
-        /*
-         * SHUFFLE cards array by looping through
-         * the array and for each card, swapping
-         * it with another randomly selected card
-         * from elsewhere in the array.
-         */
-        let len = cards.length;
-        while (len > 0) {
-            let index = Math.floor(Math.random() * len);
-            len--;
-            let temp = cards[len];
-            cards[len] = cards[index];
-            cards[index] = temp;
-        }
-
-        return cards;
-    }
+    return (
+        <table className="memory-game-table">
+            <tbody>
+                {buildTableRows()}
+            </tbody>
+        </table>
+      );
 }
+
 
 export default MemoryGameTable;

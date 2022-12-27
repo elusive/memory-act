@@ -1,105 +1,77 @@
-import React, { Component } from 'react';
+
+import React, { useContext } from 'react';
+import { GameContext } from '../state/GameContext';
 import MemoryGameTable from './MemoryGameTable';
-import PropTypes from 'prop-types';
 
-const VIEWABLE_SECONDS = 1;
-const GAME_CARD_COUNT = 24;
-const GAME_COLUMNS = 4;
-const MATCH_COUNT_GOAL = this.GAME_CARD_COUNT / 2;
 
-class MemoryGame extends Component {
-    static get propTypes() {
-        return {
-            gameWon: PropTypes.func,
-        };
-    }
+const MemoryGame = () => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            flippedCards: [],
-            matchCount: 0,
-            gameWonDelegate: this.props.gameWon,
-        };
-    }
+    const VIEWABLE_SECONDS = 2;
 
-    render() {
-        return (
-            <div className="container">
-                <MemoryGameTable
-                    ref={this.setGameTableRef}
-                    cardCount={GAME_CARD_COUNT}
-                    columns={GAME_COLUMNS}
-                    cardClick={this.cardClickHandler.bind(this)}
-                />
-            </div>
-        );
-    }
+    const state = useContext(GameContext);
 
-    startGame() {
-        this.gameTable.resetGameTable();
-    }
+//    useEffect(() => {
+        /*
+          * Todo when card selected:
+          *     - check for 2 cards selected max
+          *     - if 2 cards selected check for match
+          *     - if match change state of cards to matched
+          *     - check for all matches completed
+          *     - check for win and need to show dialog
+          */
 
-    cardClickHandler(evt, card) {
-        if (this.state.flippedCards.length === 2) {
-            return false;
-        }
+        state.cardClickHandler = (card) => {
+            // if none selected yet toggle selected only
+            if (this.state.selected.length == 1) {
+                state.toggleSelected(card.id);
+                return;
+            }
 
-        if (!card.state.isMatched && !card.state.isPicked) {
-            card.setPicked(true);
-            this.state.flippedCards.push(card);
-            this.checkForTwoFlipped();
-        }
-    }
-
-    checkForTwoFlipped() {
-        if (this.state.flippedCards.length === 2) {
-            var matchFound = this.checkForTwoMatched();
+            // else if already one selected check for match
+            if (this.state.selected.length == 1) {
+                state.toggleSelected(card.id);
+            }
+         
+            var matchFound = checkForTwoMatched();
             if (!matchFound) {
                 setTimeout(() => {
                     this.state.flippedCards.forEach((c) => c.setPicked(false));
-                    this.clearFlippedCards();
                 }, VIEWABLE_SECONDS * 1000);
             }
         }
-    }
 
-    checkForTwoMatched() {
-        let flipped1 = this.state.flippedCards[0];
-        let flipped2 = this.state.flippedCards[1];
+        function checkForTwoMatched() {
+            // need 2 selected to compare 
+            if (state.selected.length !== 2) {
+                return false;
+            }
 
-        var matched = flipped1.state.front === flipped2.state.front;
+            // check front values match for the selected
+            var matched = (state.selected[0].front === state.selected[1].front);
+            if (!matched) {
+                return false;
+            }
 
-        if (!matched) {
-            return false;
+            // use reducer to update state with match
+            state.addMatch(...state.selected);
+            
+            // all matched? then game won
+            if (state.cards.every(c => c.isMatched)) {
+                console.log('game is won!');
+                this.state.gameWonDelegate();
+            }
+
+            return true;
         }
+//    })
 
-        flipped1.setMatched();
-        flipped2.setMatched();
-        this.clearFlippedCards();
-        this.setState(
-            { matchCount: this.state.matchCount + 1 },
-            this.checkForAllMatched
-        );
-
-        return true;
-    }
-
-    checkForAllMatched() {
-        if (this.state.matchCount === MATCH_COUNT_GOAL) {
-            // game is won
-            console.log('game is won!');
-            this.state.gameWonDelegate();
-        }
-    }
-
-    clearFlippedCards() {
-        this.setState({ flippedCards: [] });
-    }
-
-    setGameTableRef(element) {
-        this.gameTable = element;
-    }
+    return (
+        <div className="container">
+            <MemoryGameTable cardCount="20" rowSize="4" isNewGame={this.state.isNewGame} />
+        </div>
+     );
 }
 
+
 export default MemoryGame;
+
