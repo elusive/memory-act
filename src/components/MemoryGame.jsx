@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { GameContext } from '../state/GameContext';
 import MemoryGameTable from './MemoryGameTable';
 
@@ -10,7 +10,7 @@ const MemoryGame = () => {
 
     const state = useContext(GameContext);
 
-    useEffect(() => {
+//    useEffect(() => {
         /*
           * Todo when card selected:
           *     - check for 2 cards selected max
@@ -63,7 +63,7 @@ const MemoryGame = () => {
 
             return true;
         }
-    })
+//    })
 
     return (
         <div className="container">
