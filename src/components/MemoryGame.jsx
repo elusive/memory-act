@@ -7,10 +7,14 @@ import MemoryGameTable from './MemoryGameTable';
 const MemoryGame = () => {
 
     const VIEWABLE_SECONDS = 2;
+    const ROW_SIZE = 4;
+    const CARD_COUNT = 20;
+
+
 
     const state = useContext(GameContext);
 
-//    useEffect(() => {
+    //    useEffect(() => {
         /*
           * Todo when card selected:
           *     - check for 2 cards selected max
@@ -22,13 +26,13 @@ const MemoryGame = () => {
 
         state.cardClickHandler = (card) => {
             // if none selected yet toggle selected only
-            if (this.state.selected.length == 1) {
+            if (this.state.selected.length === 1) {
                 state.toggleSelected(card.id);
                 return;
             }
 
             // else if already one selected check for match
-            if (this.state.selected.length == 1) {
+            if (this.state.selected.length === 1) {
                 state.toggleSelected(card.id);
             }
          
@@ -67,7 +71,7 @@ const MemoryGame = () => {
 
     return (
         <div className="container">
-            <MemoryGameTable cardCount="20" rowSize="4" isNewGame={this.state.isNewGame} />
+            <MemoryGameTable cardCount={CARD_COUNT} rowSize={ROW_SIZE} isNewGame={state.isNewGame} />
         </div>
      );
 }

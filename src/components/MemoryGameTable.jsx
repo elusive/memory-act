@@ -1,18 +1,23 @@
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { GameContext } from '../state/GameContext';
 import MemoryCard from './MemoryCard'
-
-MemoryGameTable.propTypes = {
-    cardCount: PropTypes.number,
-    rowSize: PropTypes.number
-}
+import { buildDeck } from '../state/Deck.js';
 
 const MemoryGameTable = (props) => {
     const cardCount = props.cardCount;
     const rowSize = props.rowSize;
     const state = useContext(GameContext);
+
+
+    useEffect(() => {
+        if (!state.isNewGame) return;
+
+        // build deck for Game
+        state.cards = buildDeck(rowSize, cardCount/rowSize);        
+    });
+
 
     const buildTableRows = () => {
         let cardNumber = 0;
@@ -28,9 +33,9 @@ const MemoryGameTable = (props) => {
                 tableCells.push(
                     <td className="memory-game-cell" key={'cell' + cardNumber}>
                         <MemoryCard
-                            front={state.cards[cardNumber].value}
+                            front={cardNumber}
                             isMatched={state.cards[cardNumber].isMatched}
-                            isPicked={state.cards[cardNumber].isPicked}
+                            isSelected={state.cards[cardNumber].isSelected}
                             row={r} col={c} />
                     </td>
                 );
@@ -51,5 +56,9 @@ const MemoryGameTable = (props) => {
       );
 }
 
+MemoryGameTable.propTypes = {
+    cardCount: PropTypes.number,
+    rowSize: PropTypes.number
+}
 
 export default MemoryGameTable;

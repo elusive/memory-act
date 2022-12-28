@@ -1,18 +1,14 @@
 import React, { createContext, useReducer } from 'react';
 
 import reducer from './GameReducer.js';
-import { buildDeck } from './Deck.js';
 
 
 // initial game state
-const ROW_SIZE = 4;
-const CARD_COUNT = 20;
-
 const initialState = {
-    cards: buildDeck(CARD_COUNT, ROW_SIZE),
+    cards: [],
     selected: [],
     matched: [],
-    rowSize: ROW_SIZE,
+    rowSize: 4,  // default value??
     isNewGame: false,
 };
 
@@ -22,10 +18,17 @@ export const GameContext = createContext(initialState);
 
 
 // create provider component
-export const GameContextProvider = ( children ) => {
+export const GameContextProvider = function(props) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    // actions
+    /*
+        Actions are wrappers for uses of dispatch().
+        Then these are added to state for use elsewhere
+        instead of passing dispatch() method alone.
+    */
+
+
+    // toggle selected on a card instance
     function toggleSelected(cardId) {
         dispatch({
             type: 'TOGGLE_SELECTED',
@@ -33,6 +36,7 @@ export const GameContextProvider = ( children ) => {
         });
     }
 
+    // add a match between two card instances
     function addMatch(cardA, cardB) {
         dispatch({
             type: 'ADD_MATCH',
@@ -48,19 +52,27 @@ export const GameContextProvider = ( children ) => {
         });
     }
 
+    // set new game flag
+    function setIsNewGame(isNew) {
+        dispatch({
+            type: 'SET_IS_NEW_GAME',
+            payload: isNew
+        });
+    }
+
 
     return (
-        < GameContextProvider.Provider value = {
-            {
+        <GameContext.Provider value={{
                 cards: state.cards,
                 matchCount: state.matchCount,
                 selectCount: state.selectCount,
                 rowSize: state.rowSize,
                 toggleSelected,
                 addMatch,
+                setIsNewGame,
                 cardClickHandler: {},
-            }
-        } >
-        { children }
-        </ GameContextProvider.Provider > );
+            }}>
+            { props.children}
+        </ GameContext.Provider>
+    );
 }

@@ -10,12 +10,12 @@ function GreetingModal() {
 
     const startGameClickHandler = () => {
         setIsVisible(!isVisible);
-        state.isNewGame = true;        
+        ;        
     }
 
 
     const displayStyle = {
-        display: this.isVisible ? 'flex' : 'none',
+        display: isVisible ? 'flex' : 'none',
     };
 
 

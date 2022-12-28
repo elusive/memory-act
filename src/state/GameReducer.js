@@ -27,7 +27,13 @@ const reducer = (state, action) => {
                 matched: state.cards.filter(c => c.isMatched),
             };
 
-//        case 'ADD_CARD':
+        case 'SET_IS_NEW_GAME':
+            return {
+                ...state,
+                isNewGame: action.payload
+            };
+
+        //        case 'ADD_CARD':
 //            return {
 //                ...state,
 //                cards: [...state.cards, action.payload],
