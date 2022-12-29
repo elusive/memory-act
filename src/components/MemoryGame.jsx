@@ -1,7 +1,8 @@
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GameContext } from '../state/GameContext';
 import MemoryGameTable from './MemoryGameTable';
+import GameWonModal from './MemoryGame';
 import { ROW_SIZE, CARD_COUNT } from '../state/Deck.js';
 
 
@@ -9,11 +10,21 @@ const MemoryGame = () => {
 
     const VIEWABLE_SECONDS = 2;
     const state = useContext(GameContext);
+    const [gameWon, setGameWon] = useState(false);
 
     useEffect(() => {
-        // build deck for Game
+        (async function() {
+        if (state.selected.length === 2) {
+            checkForTwoMatched()
+                .then(matchFound => {
+                    if (!matchFound) {
+                        setTimeout(() => {
+                            state.selected.forEach(async c => await state.toggleSelected(c.id));
+                        }, VIEWABLE_SECONDS * 1000);
+                    }
+                });
+        }})();
     });
-
 
      /*
       * Todo when card selected:
@@ -23,54 +34,53 @@ const MemoryGame = () => {
       *     - check for all matches completed
       *     - check for win and need to show dialog
       */
-    state.cardClickHandler = (cardid) => {
-        // if none selected yet toggle selected only
-        if (state.selected.length === 0) {
-            state.toggleSelected(cardid);
-            return;
-        }
+    state.cardClickHandler = async (cardid) => {
+        // first finish toggle of selected for this card id
+        await state.toggleSelected(cardid);
 
-        // else if already one selected check for match
+        // else if only one selected return
         if (state.selected.length === 1) {
-            state.toggleSelected(cardid);
+            return; 
         }
      
-        var matchFound = checkForTwoMatched();
-        if (!matchFound) {
-            setTimeout(() => {
-                state.selected.forEach((c) => state.toggleSelected(false));
-            }, VIEWABLE_SECONDS * 1000);
-        }
+        
     }
 
     function checkForTwoMatched() {
-        // need 2 selected to compare 
-        if (state.selected.length !== 2) {
-            return false;
-        }
-
-        // check front values match for the selected
-        var matched = (state.selected[0].front === state.selected[1].front);
-        if (!matched) {
-            return false;
-        }
-
-        // use reducer to update state with match
-        state.addMatch(...state.selected);
         
-        // all matched? then game won
-        if (state.cards.every(c => c.isMatched)) {
-            console.log('game is won!');
-            this.state.gameWonDelegate();
-        }
+        return new Promise(async (resolve) => {
+       
+            // need 2 selected to compare 
+            if (state.selected.length !== 2) {
+                resolve(false);
+                return;
+            }
 
-        return true;
+            // check front values match for the selected
+            var matched = (state.selected[0].front === state.selected[1].front);
+            if (!matched) {
+                resolve(false);
+                return;
+            }
+
+            // use reducer to update state with match
+            await state.addMatch(...state.selected);
+            
+            // all matched? then game won
+            if (state.cards.every(c => c.isMatched)) {
+                console.log('game is won!');
+                setGameWon(true);
+            }
+
+            resolve(true);
+        });
     }
 //    })
 
     return (
         <div className="container">
             <MemoryGameTable cardCount={CARD_COUNT} rowSize={ROW_SIZE} isNewGame={state.isNewGame} />
+            { gameWon && <GameWonModal /> }
         </div>
      );
 }

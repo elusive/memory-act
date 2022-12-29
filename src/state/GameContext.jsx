@@ -30,25 +30,39 @@ export const GameContextProvider = function(props) {
 
     // toggle selected on a card instance
     function toggleSelected(cardId) {
-        dispatch({
-            type: 'TOGGLE_SELECTED',
-            payload: cardId,
+        return new Promise((resolve, reject) => {
+            try {
+                dispatch({
+                    type: 'TOGGLE_SELECTED',
+                    payload: cardId,
+                });
+                resolve();
+            } catch(err) {
+                reject(err);
+            }
         });
     }
 
     // add a match between two card instances
     function addMatch(cardA, cardB) {
-        dispatch({
-            type: 'ADD_MATCH',
-            payload: [cardA, cardB],
-        });
-        dispatch({
-            type: 'TOGGLE_SELECTED',
-            payload: cardA.id, 
-        });
-        dispatch({
-            type: 'TOGGLE_SELECTED',
-            payload: cardB.id,
+        return new Promise((resolve, reject) => {
+            try {
+                dispatch({
+                    type: 'ADD_MATCH',
+                    payload: [cardA, cardB],
+                });
+                dispatch({
+                    type: 'TOGGLE_SELECTED',
+                    payload: cardA.id, 
+                });
+                dispatch({
+                    type: 'TOGGLE_SELECTED',
+                    payload: cardB.id,
+                });
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 
@@ -71,6 +85,7 @@ export const GameContextProvider = function(props) {
                 toggleSelected,
                 addMatch,
                 setIsNewGame,
+                gameWonHandler: {},
                 cardClickHandler: {},
             }}>
             { props.children}

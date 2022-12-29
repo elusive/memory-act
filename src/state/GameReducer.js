@@ -19,8 +19,8 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 cards: state.cards.map((card) => {
-                    if (action.paylod.map((c) => c.id).includes(card.id)) {
-                        card.match();
+                    if (action.payload.map((c) => c.id).includes(card.id)) {
+                        card.isMatched = true;
                     }
                     return card;
                 }),
