@@ -8,7 +8,7 @@
 This is a simple card-based memory game. The original game is [here](https://pwa-memory-game.surge.sh/) and is written using VanillaJS.
 
 I wanted to try rewriting it using React Hooks and React Context. This Memory Act game is the result. The style is the same but the code was a
-complete rewrite.
+complete rewrite. My first refactor/rewrite was using class components, no hooks, and no state management. The final version uses functional components, hooks, and react context api for state management.
 
 ### Getting Started
 
@@ -17,15 +17,9 @@ In order to play the game you can clone the repository and execute the `yarn ins
 Then 'yarn start' runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### `npm test`
+### Updates
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The change log contains updates as they are made to the application. 
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+#### Questions
+me at johng dot info
