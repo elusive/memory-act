@@ -1,14 +1,14 @@
 import React, { createContext, useReducer } from 'react';
+import { ROW_SIZE, CARD_COUNT, NewDeck} from './Deck';
+import reducer from './GameReducer';
 
-import reducer from './GameReducer.js';
 
 
 // initial game state
 const initialState = {
-    cards: [],
+    cards: NewDeck(ROW_SIZE, CARD_COUNT),
     selected: [],
-    matched: [],
-    rowSize: 4,  // default value??
+    matched: [], rowSize: 4,  // default value??
     isNewGame: false,
 };
 
@@ -64,9 +64,10 @@ export const GameContextProvider = function(props) {
     return (
         <GameContext.Provider value={{
                 cards: state.cards,
-                matchCount: state.matchCount,
-                selectCount: state.selectCount,
+                matched: state.matched,
+                selected: state.selected,
                 rowSize: state.rowSize,
+                isNewGame: state.isNewGame,
                 toggleSelected,
                 addMatch,
                 setIsNewGame,

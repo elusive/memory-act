@@ -1,22 +1,23 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { GameContext } from '../state/GameContext';
 
 
 function GreetingModal() {
 
-    const [isVisible, setIsVisible] = useState(true);
     const state = useContext(GameContext);
-
-
+    const [isVisible, setIsVisible] = useState(!state.isNewGame);
     const startGameClickHandler = () => {
         setIsVisible(!isVisible);
-        ;        
+        state.setIsNewGame(true);        
     }
-
-
     const displayStyle = {
         display: isVisible ? 'flex' : 'none',
     };
+
+
+    useEffect(() => {
+
+    })
 
 
     return (

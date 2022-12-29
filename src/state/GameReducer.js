@@ -6,13 +6,13 @@ const reducer = (state, action) => {
         case 'TOGGLE_SELECTED':
             return {
                 ...state,
-                cards: state.cards.map((card) => {
-                    if (card.id === action.payload.id) {
-                        card.toggle();
+                cards: state.cards.map(c => {
+                    if (c.id && c.id === action.payload) {
+                        c.isSelected = !c.isSelected;
                     }
-                    return card;
+                    return c;
                 }),
-                selected: state.cards.filter(c => c.isSelected),
+                selected: state.cards.filter(d => d.isSelected),
             };
 
         case 'ADD_MATCH':

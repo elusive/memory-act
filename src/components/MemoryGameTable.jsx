@@ -1,24 +1,19 @@
-
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { GameContext } from '../state/GameContext';
 import MemoryCard from './MemoryCard'
-import { buildDeck } from '../state/Deck.js';
+
 
 const MemoryGameTable = (props) => {
+    
     const cardCount = props.cardCount;
     const rowSize = props.rowSize;
     const state = useContext(GameContext);
-
-
-    useEffect(() => {
-        if (!state.isNewGame) return;
-
-        // build deck for Game
-        state.cards = buildDeck(rowSize, cardCount/rowSize);        
-    });
-
-
+    const [isVisible, setIsVisible] = useState(props.isNewGame);
+    const displayStyle = {
+        display: isVisible ? 'flex' : 'none',
+    };
+    
     const buildTableRows = () => {
         let cardNumber = 0;
         let maxCardNumber = Math.min(cardCount / 2);
@@ -27,28 +22,29 @@ const MemoryGameTable = (props) => {
         for (let r = 0; r < rows; r++) {
             let tableCells = [];
             for (let c = 0; c < rowSize; c++) {
-                // check if we need to reset card number or just increment
-                cardNumber = (cardNumber < maxCardNumber) ? cardNumber + 1 : 1;
-
+                let card = state.cards.find(card => card.row == r && card.col == c); 
                 tableCells.push(
-                    <td className="memory-game-cell" key={'cell' + cardNumber}>
+                    <td className="memory-game-cell" key={card.id}>
                         <MemoryCard
-                            front={cardNumber}
-                            isMatched={state.cards[cardNumber].isMatched}
-                            isSelected={state.cards[cardNumber].isSelected}
-                            row={r} col={c} />
+                            cardId={card.id}
+                            front={card.front}
+                            isMatched={card.isMatched}
+                            isSelected={card.isSelected}
+                            cardClickHandler={state.cardClickHandler}
+                            row={card.row} col={card.col} />
                     </td>
                 );
             }
 
-            tableRows.push(<tr key={'row' + cardNumber}>{tableCells}</tr>);
+            tableRows.push(<tr key={'row' + r}>{tableCells}</tr>);
         }
 
         return tableRows;
     }
 
-    return (
-        <table className="memory-game-table">
+
+    return (state.isNewGame &&
+        <table className="memory-game-table" >
             <tbody>
                 {buildTableRows()}
             </tbody>
