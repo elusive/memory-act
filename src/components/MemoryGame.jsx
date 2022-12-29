@@ -38,7 +38,7 @@ const MemoryGame = () => {
         var matchFound = checkForTwoMatched();
         if (!matchFound) {
             setTimeout(() => {
-                state.selected.forEach((c) => state.toggleSelected(false));
+                state.selected.forEach(_ => state.toggleSelected(false));
             }, VIEWABLE_SECONDS * 1000);
         }
     }
