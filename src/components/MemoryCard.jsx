@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 const MemoryCard = (props) => {
-    const [isSelected] = useState(props.isSelected);
-    const [isMatched] = useState(props.isMatched);
 
     const DefaultStyle = ['inside'];
     const SelectedStyle = ['inside picked'];
@@ -19,7 +17,7 @@ const MemoryCard = (props) => {
 
     return (
         <div className="card" onClick={handleCardClick} data-row="0" data-col="1" data-id={props.cardId}>
-            <div className={isMatched ? MatchedStyle : isSelected ? SelectedStyle : DefaultStyle}>
+            <div className={props.isMatched ? MatchedStyle : props.isSelected ? SelectedStyle : DefaultStyle}>
 
                 <div className="front">
                     <div>{props.front}</div>
